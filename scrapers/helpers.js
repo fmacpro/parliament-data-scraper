@@ -4,18 +4,39 @@ module.exports.delay = function () {
     return new Promise(resolve => setTimeout(resolve, 500));
 };
 
+module.exports.sortByKey = function (array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+}
+
+module.exports.removeDuplicateObjects = function (myArr, prop) {
+    return myArr.filter((obj, pos, arr) => {
+        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    });
+}
+
+module.exports.removeDuplicateStrings = function ( data ) {
+
+    if ( Array.isArray(data) ) {
+
+        data = [...new Set(data)];
+        data = data.filter(function (el) {
+            return el != null;
+        });
+
+        return data;
+
+    }
+
+    return data;
+
+}
+
 module.exports.write = async function (data, file) {
 
     try {
-
-        if ( Array.isArray(data) ) {
-
-            data = [...new Set(data)];
-            data = data.filter(function (el) {
-                return el != null;
-            });
-
-        }
 
         let path = file.split('/');
         path.pop();

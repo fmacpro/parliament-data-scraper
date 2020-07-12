@@ -1,6 +1,10 @@
 # Parliamentary Data Scraper
 
-Scrapes MPs details, Constituencies and Parties of the House of Commons (United Kingdom Parliament) into useful a json format.
+Scrapes MPs details, Constituencies and Parties into useful a json format.
+
+Currently covers:
+- House of Commons (United Kingdom Parliament)
+- Scottish Parliament 
 
 ## Usage Example
 
@@ -21,16 +25,21 @@ uk-parliament/commons/mps-details.json
 uk-parliament/commons/mps.json
 uk-parliament/commons/parties.json
 uk-parliament/commons/constituencies.json
+
+scottish-parliament/msps-details.json
+scottish-parliament/msps.json
+scottish-parliament/parties.json
+scottish-parliament/constituencies.json
+scottish-parliament/government-roles.json
 ```
 
 ## Todo List
 
-- Extend UK Parliament House of Commons data scraping
-- Add House of Lords data to UK Parliament scraper `scrapers/ukParliament.js`
-- Add Scottish Parliament scraper
-- Add Northern Ireland Assembly scraper
-- Add Welsh Assembly scraper
-- Add other scrapers
+- Add House of Lords
+- Add Northern Ireland Assembly
+- Add Welsh Assembly
+- Extend scope of data
+- Add others
 
 ## Contributions
 

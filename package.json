@@ -1,6 +1,6 @@
 {
   "name": "parliament-data-scraper",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "A parliament member information scraper. Scrapes member details, parties and constituencies.",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/fmacpro/parliament-data-scraper#readme",
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "memory-cache": "^0.2.0"
   }
 }

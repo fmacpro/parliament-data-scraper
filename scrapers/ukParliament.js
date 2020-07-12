@@ -84,9 +84,9 @@ module.exports.scrapeUkParliamentData = async function ( path ) {
         let writes = [];
 
         writes.push(helpers.write(mps, path + 'uk-parliament/commons/mps-details.json'));
-        writes.push(helpers.write(mpsNames, path + 'uk-parliament/commons/mps.json'));
-        writes.push(helpers.write(parties, path + 'uk-parliament/commons/parties.json'));
-        writes.push(helpers.write(constituencies, path + 'uk-parliament/commons/constituencies.json'));
+        writes.push(helpers.write(helpers.removeDuplicateStrings(mpsNames), path + 'uk-parliament/commons/mps.json'));
+        writes.push(helpers.write(helpers.removeDuplicateStrings(parties), path + 'uk-parliament/commons/parties.json'));
+        writes.push(helpers.write(helpers.removeDuplicateStrings(constituencies), path + 'uk-parliament/commons/constituencies.json'));
 
         await Promise.all(writes);
 
