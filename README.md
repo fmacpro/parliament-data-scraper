@@ -4,7 +4,7 @@ Scrapes MPs details, Constituencies and Parties into useful a json format.
 
 Currently covers:
 - House of Commons (United Kingdom Parliament)
-- Scottish Parliament 
+- Scottish Parliament
 
 ## Usage Example
 
@@ -14,7 +14,7 @@ Install the package using `npm install parliament-data-scraper --save`  then use
 const scraper = require('parliament-data-scraper');
 
 (async () => {
-    await scraper.scrapeAllParliamentData('./data/');
+    await scraper.scrapeAllParliamentData(__dirname + '/data/');
 })();
 ```
 
