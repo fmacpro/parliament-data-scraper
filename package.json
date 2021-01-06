@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/fmacpro/parliament-data-scraper#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "memory-cache": "^0.2.0"
   }
 }
