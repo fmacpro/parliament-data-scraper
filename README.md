@@ -1,6 +1,6 @@
 # Parliamentary Data Scraper
 
-Scrapes MPs details, Constituencies and Parties into useful a json format.
+Scrapes MPs details, Constituencies, Parties, Government Roles & Groups into a useful json format.
 
 Currently covers:
 - House of Commons (United Kingdom Parliament)
@@ -31,6 +31,7 @@ scottish-parliament/msps.json
 scottish-parliament/parties.json
 scottish-parliament/constituencies.json
 scottish-parliament/government-roles.json
+scottish-parliament/cross-party-groups.json
 ```
 
 ## Todo List
