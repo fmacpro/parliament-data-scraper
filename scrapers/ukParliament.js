@@ -45,7 +45,7 @@ const scrape = async function (item) {
     if ( item.detail['https://id.parliament.uk/' + mp.id]['https://id.parliament.uk/schema/personHasTwitterWebLink'] ) {
         mp.twitter = item.detail['https://id.parliament.uk/' + mp.id]['https://id.parliament.uk/schema/personHasTwitterWebLink'][0].value || '';
     }
-    if ( item.partyMemberHasPartyMembership.partyMembershipHasParty ) {
+    if ( item.partyMemberHasPartyMembership && item.partyMemberHasPartyMembership.partyMembershipHasParty ) {
         let partyID = item.partyMemberHasPartyMembership.partyMembershipHasParty['@id'];
         mp.party = item.detail['https://id.parliament.uk/' + partyID]['https://id.parliament.uk/schema/partyName'][0].value || '';
     }
