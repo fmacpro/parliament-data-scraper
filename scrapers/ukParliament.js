@@ -2,21 +2,25 @@ const helpers = require('./helpers.js');
 const axios = require('axios');
 
 const getDetail = async function (id) {
-    try {
-        await helpers.delay();
+    const maxRetries = 3;
 
-        let response = await axios.get( 'https://api.parliament.uk/query/person_by_id.rj?person_id='+ id );
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+            await helpers.delay();
 
-        return response.data;
+            let response = await axios.get( 'https://api.parliament.uk/query/person_by_id.rj?person_id='+ id );
 
-    } catch (error) {
-        console.log('Error fetching detail. Retrying...');
+            return response.data;
 
-        await helpers.delay();
+        } catch (error) {
+            console.log('Error fetching detail (attempt ' + attempt + '/' + maxRetries + '). Retrying...');
 
-        let response = await axios.get( 'https://api.parliament.uk/query/person_by_id.rj?person_id='+ id );
+            if (attempt === maxRetries) {
+                throw new Error('Failed to fetch detail for ' + id + ' after ' + maxRetries + ' attempts: ' + error.message);
+            }
 
-        return response.data;
+            await helpers.delay();
+        }
     }
 };
 

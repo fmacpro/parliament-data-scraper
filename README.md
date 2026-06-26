@@ -3,22 +3,41 @@
 Scrapes MPs details, Constituencies, Parties, Government Roles & Groups into a useful json format.
 
 Currently covers:
+
 - House of Commons (United Kingdom Parliament)
 - Scottish Parliament
 
-## Usage Example
+## Usage
 
-Install the package using `npm install parliament-data-scraper --save`  then use it:
+Install the package using `npm install parliament-data-scraper --save` then use it:
 
-```
-const scraper = require('parliament-data-scraper');
+### Scrape all parliaments
+
+```js
+const scraper = require("parliament-data-scraper");
 
 (async () => {
-    await scraper.scrapeAllParliamentData(__dirname + '/data/');
+  await scraper.scrapeAllParliamentData(__dirname + "/data/");
 })();
 ```
 
-this will create the following files in the `data/` directory in the project root
+### Scrape individual parliaments
+
+```js
+const scraper = require("parliament-data-scraper");
+
+// UK Parliament only
+(async () => {
+  await scraper.scrapeUkParliamentData(__dirname + "/data/");
+})();
+
+// Scottish Parliament only
+(async () => {
+  await scraper.scrapeScottishParliamentData(__dirname + "/data/");
+})();
+```
+
+Running `scrapeAllParliamentData` will create the following files in the `data/` directory in the project root
 
 ```
 uk-parliament/commons/mps-details.json

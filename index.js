@@ -1,7 +1,7 @@
 const ukParliament = require('./scrapers/ukParliament.js');
-const sottishParliament = require('./scrapers/scottishParliament.js');
+const scottishParliament = require('./scrapers/scottishParliament.js');
 
-module.exports.scrapeScottishParliamentData = sottishParliament.scrapeScottishParliamentData;
+module.exports.scrapeScottishParliamentData = scottishParliament.scrapeScottishParliamentData;
 module.exports.scrapeUkParliamentData = ukParliament.scrapeUkParliamentData;
 
 module.exports.scrapeAllParliamentData = async function ( path ) {

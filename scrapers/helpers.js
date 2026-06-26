@@ -1,19 +1,23 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 
 module.exports.delay = function () {
     return new Promise(resolve => setTimeout(resolve, 500));
 };
 
 module.exports.sortByKey = function (array, key) {
-    return array.sort(function(a, b) {
+    return [...array].sort(function(a, b) {
         var x = a[key]; var y = b[key];
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
 }
 
 module.exports.removeDuplicateObjects = function (myArr, prop) {
-    return myArr.filter((obj, pos, arr) => {
-        return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+    const seen = new Set();
+    return myArr.filter(obj => {
+        const val = obj[prop];
+        if (seen.has(val)) return false;
+        seen.add(val);
+        return true;
     });
 }
 
@@ -44,20 +48,14 @@ module.exports.write = async function (data, file) {
 
         console.log(path);
 
-        fs.mkdir(path, { recursive: true }, function (err) {
-            if (err) {
-                return console.log('failed to write directory', err);
-            }
+        await fs.mkdir(path, { recursive: true });
 
-            data = JSON.stringify(data, null, 4);
-            fs.writeFile(file, data, 'utf8', function (err) {
-                if (err) throw err
-            });
+        data = JSON.stringify(data, null, 4);
+        await fs.writeFile(file, data, 'utf8');
 
-            console.log('Data written to ' + file);
+        console.log('Data written to ' + file);
 
-            return true;
-        });
+        return true;
 
     } catch (error) {
 

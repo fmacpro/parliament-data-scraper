@@ -2,11 +2,6 @@ const helpers = require('./helpers.js');
 const axios = require('axios');
 const cache = require('memory-cache');
 
-let _parties = [];
-let _constituencies = [];
-let _roles = [];
-let _groups = [];
-
 const getGovRoleDetail = async function (id) {
 
     try {
@@ -203,7 +198,7 @@ const getConstituencyDetail = async function (id) {
     }
 };
 
-const scrape = async function (item) {
+const scrape = async function (item, accumulators) {
 
     let mp = {};
 
@@ -226,12 +221,10 @@ const scrape = async function (item) {
 
         for ( let i = 0; i < role.length; i++ ) {
 
-            _roles.push( {
+            accumulators.roles.push( {
                 id: role[i].id,
                 name: role[i].name
             } );
-
-            helpers.sortByKey(_roles, 'id');
 
         }
     }
@@ -243,12 +236,10 @@ const scrape = async function (item) {
 
         for ( let i = 0; i < group.length; i++ ) {
 
-            _groups.push( {
+            accumulators.groups.push( {
                 id: group[i].id,
                 name: group[i].name
             } );
-
-            helpers.sortByKey(_groups, 'id');
 
         }
     }
@@ -260,13 +251,11 @@ const scrape = async function (item) {
 
         for ( let i = 0; i < party.length; i++ ) {
 
-            _parties.push( {
+            accumulators.parties.push( {
                 id: party[i].id,
                 name: party[i].name,
                 preferredName: party.preferredName
             } );
-
-            helpers.sortByKey(_parties, 'id');
 
         }
 
@@ -279,7 +268,7 @@ const scrape = async function (item) {
 
         for ( let i = 0; i < constituency.length; i++ ) {
 
-            _constituencies.push( {
+            accumulators.constituencies.push( {
                 id: constituency[i].id,
                 code: constituency[i].code,
                 ShortName: constituency[i].ShortName,
@@ -290,8 +279,6 @@ const scrape = async function (item) {
                     RegionCode: constituency[i].region.RegionCode
                 }
             } );
-
-            helpers.sortByKey(_constituencies, 'id');
 
         }
 
@@ -305,6 +292,13 @@ const scrape = async function (item) {
 
 module.exports.scrapeScottishParliamentData = async function ( path ) {
 
+    let accumulators = {
+        parties: [],
+        constituencies: [],
+        roles: [],
+        groups: []
+    };
+
     try {
 
         const response = await axios.get('https://data.parliament.scot/api/members');
@@ -317,7 +311,7 @@ module.exports.scrapeScottishParliamentData = async function ( path ) {
         for (let item of list) {
             if ( item['IsCurrent'] === true ) {
 
-                let mp = await scrape(item);
+                let mp = await scrape(item, accumulators);
 
                 mps.push(mp);
                 mpsNames.push(mp.parlimentaryName);
@@ -331,10 +325,10 @@ module.exports.scrapeScottishParliamentData = async function ( path ) {
 
         writes.push(helpers.write(mps, path + 'scottish-parliament/msps-details.json'));
         writes.push(helpers.write(helpers.removeDuplicateStrings(mpsNames), path + 'scottish-parliament/msps.json'));
-        writes.push(helpers.write(helpers.removeDuplicateObjects(_parties, 'id'), path + 'scottish-parliament/parties.json'));
-        writes.push(helpers.write(helpers.removeDuplicateObjects(_constituencies, 'id'), path + 'scottish-parliament/constituencies.json'));
-        writes.push(helpers.write(helpers.removeDuplicateObjects(_roles, 'id'), path + 'scottish-parliament/government-roles.json'));
-        writes.push(helpers.write(helpers.removeDuplicateObjects(_groups, 'id'), path + 'scottish-parliament/cross-party-groups.json'));
+        writes.push(helpers.write(helpers.removeDuplicateObjects(helpers.sortByKey(accumulators.parties, 'id'), 'id'), path + 'scottish-parliament/parties.json'));
+        writes.push(helpers.write(helpers.removeDuplicateObjects(helpers.sortByKey(accumulators.constituencies, 'id'), 'id'), path + 'scottish-parliament/constituencies.json'));
+        writes.push(helpers.write(helpers.removeDuplicateObjects(helpers.sortByKey(accumulators.roles, 'id'), 'id'), path + 'scottish-parliament/government-roles.json'));
+        writes.push(helpers.write(helpers.removeDuplicateObjects(helpers.sortByKey(accumulators.groups, 'id'), 'id'), path + 'scottish-parliament/cross-party-groups.json'));
 
         await Promise.all(writes);
 
